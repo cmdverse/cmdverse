@@ -218,7 +218,7 @@
           const formData = new FormData(this.form);
           const projectData = this.processFormData(formData);
 
-          const ghpToken = "ghp_yourActualTokenHere"; // replace with your real token
+          const ghpToken = "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"; // replace with your real token
           const response = await fetch(
             "https://api.github.com/repos/ralphsmits/testing3oct/contents/projects/" + encodeURIComponent(projectData.projectName) + ".json",
             {
