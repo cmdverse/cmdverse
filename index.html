@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Submitter</title>
+  <style>
+    /* Your existing CSS remains the same */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    #bgVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: block;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      max-width: 700px;
+      width: 90%;
+      height: auto;
+      display: inline-block;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      margin: 0 auto 100px auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #eee;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      font-size: 14px;
+      background: #1f1f1f;
+      color: #fff;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #4ea1ff;
+      box-shadow: 0 0 0 3px rgba(78, 161, 255, 0.3);
+    }
+
+    small {
+      display: block;
+      margin-top: 5px;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4ea44f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background: #3e8e41;
+    }
+
+    button:disabled {
+      background: #7fbf80;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .message.success {
+      background: #204f26;
+      color: #b4f5c3;
+      border: 1px solid #4ea44f;
+    }
+
+    .message.error {
+      background: #4f2020;
+      color: #f5b4b4;
+      border: 1px solid #a44e4e;
+    }
+
+    .token-input {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <div id="video-container">
+    <video autoplay muted loop id="bgVideo">
+      <source src="https://raw.githubusercontent.com/ralphsmits/testing3oct/refs/heads/main/backdrop.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Logo Above Form -->
+  <div class="logo-container">
+    <img src="https://raw.githubusercontent.com/ralphsmits/testing3oct/refs/heads/main/cmdverselogo2.png" alt="Project Submitter" class="logo">
+  </div>
+
+  <!-- Dark Form Container -->
+  <div class="container">
+    <div class="form-group token-input">
+      <label for="githubToken">GitHub Token *</label>
+      <input type="password" id="githubToken" name="githubToken" placeholder="Enter your GitHub Personal Access Token" required>
+      <small>Get this from GitHub Settings → Developer settings → Personal access tokens</small>
+    </div>
+
+    <form id="projectForm">
+      <div class="form-group">
+        <label for="projectName">Project Name *</label>
+        <input type="text" id="projectName" name="projectName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="creators">Creators (comma separated) *</label>
+        <input type="text" id="creators" name="creators" placeholder="Ava Janssen, Rik de Boer" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (comma separated) *</label>
+        <input type="text" id="tags" name="tags" placeholder="Tech, interaction, sensors" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category *</label>
+        <select id="category" name="category" required>
+          <option value="">Select a category</option>
+          <option value="Human">Human</option>
+          <option value="Void">Void</option>
+          <option value="Tech">Tech</option>
+          <option value="Story">Story</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="year">Year *</label>
+        <input type="number" id="year" name="year" min="2000" max="2030" placeholder="2025" required>
+      </div>
+
+      <div class="form-group">
+        <label for="imageFile">Project Thumbnail *</label>
+        <input type="file" id="imageFile" name="imageFile" accept="image/png, image/jpeg, image/jpg" required>
+        <small>PNG or JPG, max 2MB</small>
+      </div>
+
+      <button type="submit" id="submitBtn">Submit Project</button>
+    </form>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    class ProjectSubmitter {
+      constructor() {
+        this.form = document.getElementById('projectForm');
+        this.messageEl = document.getElementById('message');
+        this.submitBtn = document.getElementById('submitBtn');
+        this.tokenInput = document.getElementById('githubToken');
+        
+        // Check for stored token
+        const storedToken = localStorage.getItem('githubToken');
+        if (storedToken) {
+          this.tokenInput.value = storedToken;
+        }
+
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+      }
+
+      async handleSubmit(e) {
+        e.preventDefault();
+        this.setMessage('', '');
+        this.setLoading(true);
+
+        try {
+          const token = this.tokenInput.value.trim();
+          if (!token) {
+            throw new Error('GitHub token is required');
+          }
+
+          // Store token for future use
+          localStorage.setItem('githubToken', token);
+
+          const formData = new FormData(this.form);
+          const projectData = this.processFormData(formData);
+          const imageFile = document.getElementById('imageFile').files[0];
+          
+          // Validate image file size
+          if (imageFile && imageFile.size > 2 * 1024 * 1024) {
+            throw new Error('Image file size exceeds 2MB limit');
+          }
+
+          // Test token first
+          await this.testToken(token);
+
+          // Upload image first
+          let imageUrl = '';
+          if (imageFile) {
+            imageUrl = await this.uploadImage(projectData.projectName, imageFile, token);
+            projectData.imageUrl = imageUrl;
+          }
+
+          // Upload JSON data
+          await this.uploadJSON(projectData, token);
+
+          this.setMessage('Project submitted successfully!', 'success');
+          this.form.reset();
+        } catch (error) {
+          this.setMessage(`Error: ${error.message}`, 'error');
+          console.error('Submission error:', error);
+        } finally {
+          this.setLoading(false);
+        }
+      }
+
+      async testToken(token) {
+        const response = await fetch(
+          'https://api.github.com/user',
+          {
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('Invalid GitHub token. Please check your token and try again.');
+          }
+          throw new Error(`Token validation failed: ${response.status}`);
+        }
+
+        const userData = await response.json();
+        console.log('Authenticated as:', userData.login);
+        return userData;
+      }
+
+      async uploadImage(projectName, imageFile, token) {
+        const fileName = this.sanitizeFileName(projectName) + '.' + imageFile.name.split('.').pop();
+        const imagePath = `projects/images/${fileName}`;
+        
+        console.log('Uploading image to:', imagePath);
+        
+        const response = await fetch(
+          `https://api.github.com/repos/cmdverse/cmdverse/contents/${imagePath}`,
+          {
+            method: "PUT",
+            headers: {
+              "Authorization": `token ${token}`,
+              "Content-Type": "application/json",
+              "Accept": "application/vnd.github.v3+json"
+            },
+            body: JSON.stringify({
+              message: `Add image for project: ${projectName}`,
+              content: await this.fileToBase64(imageFile)
+            })
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Image upload error details:', errorData);
+          throw new Error(`Image upload failed: ${errorData.message || 'Unknown error'}`);
+        }
+
+        const result = await response.json();
+        console.log('Image upload successful:', result.content.download_url);
+        return result.content.download_url;
+      }
+
+      async uploadJSON(projectData, token) {
+        const fileName = this.sanitizeFileName(projectData.projectName) + '.json';
+        const jsonPath = `projects/data/${fileName}`;
+        
+        console.log('Uploading JSON to:', jsonPath);
+        
+        const response = await fetch(
+          `https://api.github.com/repos/cmdverse/cmdverse/contents/${jsonPath}`,
+          {
+            method: "PUT",
+            headers: {
+              "Authorization": `token ${token}`,
+              "Content-Type": "application/json",
+              "Accept": "application/vnd.github.v3+json"
+            },
+            body: JSON.stringify({
+              message: `Add project: ${projectData.projectName}`,
+              content: btoa(JSON.stringify(projectData, null, 2))
+            })
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('JSON upload error details:', errorData);
+          throw new Error(`JSON upload failed: ${errorData.message || 'Unknown error'}`);
+        }
+
+        const result = await response.json();
+        console.log('JSON upload successful');
+        return result;
+      }
+
+      sanitizeFileName(name) {
+        return name.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, '')
+          .substring(0, 50); // Limit length
+      }
+
+      processFormData(formData) {
+        const creators = formData.get('creators').split(',').map(n => n.trim()).filter(n => n);
+        const tags = formData.get('tags').split(',').map(t => t.trim()).filter(t => t);
+        
+        if (creators.length === 0) throw new Error('At least one creator is required');
+        if (tags.length === 0) throw new Error('At least one tag is required');
+        
+        return {
+          projectName: formData.get('projectName'),
+          creators,
+          description: formData.get('description'),
+          tags,
+          category: formData.get('category'),
+          year: parseInt(formData.get('year')),
+          submittedAt: new Date().toISOString()
+        };
+      }
+
+      fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            const base64 = reader.result.split(',')[1];
+            resolve(base64);
+          };
+          reader.onerror = error => reject(error);
+        });
+      }
+
+      setMessage(text, type) {
+        if (!text) {
+          this.messageEl.style.display = 'none';
+          return;
+        }
+        this.messageEl.textContent = text;
+        this.messageEl.className = `message ${type}`;
+        this.messageEl.style.display = 'block';
+      }
+
+      setLoading(loading) {
+        this.submitBtn.disabled = loading;
+        this.submitBtn.textContent = loading ? 'Submitting...' : 'Submit Project';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => new ProjectSubmitter());
+  </script>
+</body>
+</html>
