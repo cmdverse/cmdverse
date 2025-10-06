@@ -193,7 +193,7 @@
                     this.setMessage('Project created successfully!', 'success');
                     this.form.reset();
                 } catch (error) {
-                    this.setMessage(`Error: ${error.message}`, 'error');
+                    this.setMessage(Error: ${error.message}, 'error');
                     console.error('Submission error:', error);
                 } finally {
                     this.setLoading(false);
@@ -220,7 +220,7 @@
                 try {
                     const response = await fetch('https://api.github.com/user', {
                         headers: {
-                            'Authorization': `token ${token}`
+                            'Authorization': token ${token}
                         }
                     });
                     
@@ -232,7 +232,7 @@
                     console.log('Token works for user:', userData.login);
                     return true;
                 } catch (error) {
-                    throw new Error(`Token test failed: ${error.message}`);
+                    throw new Error(Token test failed: ${error.message});
                 }
             }
 
@@ -259,66 +259,64 @@
                 // Create folder and files on GitHub
                 await this.createGitHubFile(
                     githubToken, 
-                    `${folderName}/metadata.json`,
+                    ${folderName}/metadata.json,
                     JSON.stringify(metadataContent, null, 2),
                     false // not an image
                 );
 
                 await this.createGitHubFile(
                     githubToken,
-                    `${folderName}/thumbnail.png`,
+                    ${folderName}/thumbnail.png,
                     imageBase64,
                     true // is an image
                 );
             }
 
-            async createGitHubFile(token, path, content, isImage = false) {
-                try {
-                    let base64Content;
-                    
-                    if (isImage) {
-                        // Remove the data URL prefix for images
-                        base64Content = content.split(',')[1];
-                    } else {
-                        // For text files, use proper base64 encoding
-                        base64Content = btoa(unescape(encodeURIComponent(content)));
-                    }
+async createGitHubFile(token, path, content, isImage = false) {
+    try {
+        let base64Content;
+        
+        if (isImage) {
+            base64Content = content.split(',')[1]; // Remove data URL prefix
+        } else {
+            base64Content = btoa(unescape(encodeURIComponent(content)));
+        }
 
-                    const response = await fetch(
-                        `https://api.github.com/repos/cmdverse/cmdverse/contents/pending/${path}`,, 
-                        {
-                            method: 'PUT',
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                message: `Add project: ${path.split('/')[0]}`,
-                                content: base64Content,
-                                branch: 'main'
-                            })
-                        }
-                    );
-
-                    const responseData = await response.json();
-                    
-                    if (!response.ok) {
-                        if (response.status === 401) {
-                            throw new Error('Invalid token - check token permissions');
-                        } else if (response.status === 403) {
-                            throw new Error('Token missing required scopes (need repo or public_repo)');
-                        } else if (response.status === 404) {
-                            throw new Error('Repository not found - check username/repo name');
-                        } else {
-                            throw new Error(`GitHub API error: ${response.status} - ${responseData.message}`);
-                        }
-                    }
-
-                    return responseData;
-                } catch (error) {
-                    throw new Error(`Network error: ${error.message}`);
-                }
+        const response = await fetch(
+            `https://api.github.com/repos/cmdverse/cmdverse/contents/${path}`, 
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: `Add project: ${path.split('/')[0]}`,
+                    content: base64Content,
+                    branch: 'main'
+                })
             }
+        );
+
+        const responseData = await response.json();
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('Invalid token - check token permissions');
+            } else if (response.status === 403) {
+                throw new Error('Token missing required scopes (need repo or public_repo)');
+            } else if (response.status === 404) {
+                throw new Error('Repository not found - check username/repo name');
+            } else {
+                throw new Error(`GitHub API error: ${response.status} - ${responseData.message}`);
+            }
+        }
+
+        return responseData;
+    } catch (error) {
+        throw new Error(`Network error: ${error.message}`);
+    }
+}
 
             fileToBase64(file) {
                 return new Promise((resolve, reject) => {
@@ -344,7 +342,7 @@
                 }
                 
                 this.messageEl.textContent = text;
-                this.messageEl.className = `message ${type}`;
+                this.messageEl.className = message ${type};
                 this.messageEl.style.display = 'block';
             }
 
