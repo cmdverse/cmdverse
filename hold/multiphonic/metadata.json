@@ -1,0 +1,17 @@
+{
+  "projectName": "Multiphonic",
+  "creators": [
+    "Ralph Smits",
+    "Daniël Groenenboom"
+  ],
+  "description": "A cloud-based platform where musicians collaborate in real time, layering tracks and creating harmonies together - no matter where they are in the world.",
+  "tags": [
+    "Tech",
+    "UX",
+    "Audio",
+    "Social"
+  ],
+  "category": "Human",
+  "year": "2024-05-14",
+  "imageFile": "thumbnail.png"
+}
